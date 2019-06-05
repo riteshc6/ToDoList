@@ -122,9 +122,6 @@ completed.addEventListener("click", () => {
 
 
 
-
-
-// -----------------------------------------------------TODO-------------------------------------------------------
 // Show delete task option upon hover and perform delete upon click on cross
 
 let ul = document.querySelector("ul")
@@ -136,10 +133,16 @@ ul.addEventListener("mouseenter", (e) => {
         // console.log(l)
         l.addEventListener("mouseenter", (event1) => {
             event1.target.querySelector(".cross").style.visibility = "visible"
+            event.target.querySelector(".cross").addEventListener("click", (event3) => {
+                let node = event3.target.parentNode;
+                node.remove();
+                event.stopImmediatePropagation();
+            })
         })
         l.addEventListener("mouseleave", (event2) => {
             event2.target.querySelector(".cross").style.visibility = "hidden"
         })        
+        
     }
     
 
@@ -147,5 +150,3 @@ ul.addEventListener("mouseenter", (e) => {
 
 
 
-
-// })
