@@ -7,49 +7,15 @@ var count = 0
 text.addEventListener("keypress", (e) => {
     if (e.keyCode === 13) {
         let obj = {}
-        // Create elements to be added to html
-        let next = e.target.nextElementSibling
-
-        const li = document.createElement("li")
-        li.setAttribute("id", count++)
-        li.setAttribute("draggable", "true")
-        li.setAttribute("ondragstart", "dragstart_handler(event)")
-        li.setAttribute("ondrop", "drop_handler(event)")
-        li.setAttribute("ondragover", "dragover_handler(event)")
         
-        // li.className = "list"
-        const input = document.createElement("input")
-        input.setAttribute('type', 'checkbox')
-        input.setAttribute('id', 'toggle')
-
-        // li.appendChild(input)
-
-        const label = document.createElement("label")
-
-
-        label.textContent = e.target.value
-       
-        let div = document.createElement("div")
-        div.appendChild(input)
-        div.appendChild(label)
-        li.appendChild(div)
-        let cross = document.createElement("div")
-
-        cross.textContent = "\u274C"
-        cross.style.fontSize = "8px"
-        cross.className = "cross"
-        li.append(cross)
-        li.style.display = "flex"
-        li.style.alignItems = "center"
-        li.style.justifyContent = "space-between"
-        li.querySelector(".cross").style.visibility = "hidden"
+      
         obj["text"] = e.target.value
         obj["completed"] = false
-        obj["li"] = li
-        data[count - 1] = obj
-        next.appendChild(li)
-        console.log(data)
+        
+
+        data[count++] = obj
         e.target.value = ""
+        domRefresh()
     }
 })
 
@@ -267,8 +233,8 @@ function domRefresh(){
         div.appendChild(input)
         div.appendChild(label)
         li.appendChild(div)
-        let cross = document.createElement("div")
 
+        let cross = document.createElement("div")
         cross.textContent = "\u274C"
         cross.style.fontSize = "8px"
         cross.className = "cross"
@@ -279,6 +245,7 @@ function domRefresh(){
         li.querySelector(".cross").style.visibility = "hidden"
         
         document.querySelector("ul").appendChild(li)
+        
 
     }
 }
