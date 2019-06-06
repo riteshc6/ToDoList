@@ -2,6 +2,7 @@
 let text = document.getElementById("task")
 let todo = ""
 let obj = {}
+var count = 0
 text.addEventListener("keypress", (e) => {
     if (e.keyCode === 13) {
 
@@ -9,7 +10,13 @@ text.addEventListener("keypress", (e) => {
         let next = e.target.nextElementSibling
 
         const li = document.createElement("li")
-        li.className = "list"
+        li.setAttribute("id", count++)
+        li.setAttribute("draggable", "true")
+        li.setAttribute("ondragstart", "dragstart_handler(event)")
+        li.setAttribute("ondrop", "drop_handler(event)")
+        li.setAttribute("ondragover", "dragover_handler(event)")
+        
+        // li.className = "list"
         const input = document.createElement("input")
         input.setAttribute('type', 'checkbox')
         input.setAttribute('id', 'toggle')
@@ -148,5 +155,67 @@ ul.addEventListener("mouseenter", (e) => {
 
 })
 
+
+
+// ---------------------------------------- DRAG & DROP ------------------------------------------------
+function dragstart_handler(ev) {
+    // console.log(ev.target)
+    // console.log("first",ev.target.tagName)
+    if (ev.target.tagName === "LI") {
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+        ev.dataTransfer.setData("top-start", ev.target.offsetTop);
+    }
+    else {
+        ev.dataTransfer.setData("text/plain", ev.target.parentNode.id);
+    }
+    
+    
+    // ev.dataTransfer.setdata("text/html", "<p>Example paragraph</p>")
+    //  ev.dataTransfer.setData("text/uri-list", "http://developer.mozilla.org")
+}
+
+function dragover_handler(ev) {
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move"
+}
+
+function drop_handler(ev) {
+    ev.preventDefault();
+    // console.log(ev.target)
+    let parent = ev.target
+    let topEnd = ev.target.offsetTop
+    let topStart = ev.dataTransfer.getData("top-start")
+    let relative = topStart - topEnd
+
+    
+    if (parent.tagName !== "LI"){
+        parent = ev.target.parentNode.parentNode
+    }
+    console.log(parent)
+    var data = ev.dataTransfer.getData("text/plain");
+    
+    if (relative > 0){
+        // if (parent.parentNode.lastChild == ev.target){
+        //     parent.parentNode.appendChild(document.getElementById(data))
+    
+        // }
+        // else{
+            parent.parentNode.insertBefore(document.getElementById(data), parent)
+    
+        // }
+
+    } 
+    else {
+        if (parent.parentNode.lastChild == ev.target){
+            parent.parentNode.appendChild(document.getElementById(data))
+    
+        }
+        else{
+            parent.parentNode.insertBefore(document.getElementById(data), parent.nextSibling)
+    
+        }
+    }
+    
+}
 
 
