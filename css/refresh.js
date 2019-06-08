@@ -20,45 +20,6 @@ document.querySelector("#task").addEventListener("keypress", (e) => {
     }
 })
 
-// ---------------------------------------------- COMPLETE TASK -------------------------------------------------------------------
-document.querySelector("ul").addEventListener("click", (e) => {
-    if (e.target.id == "toggle"){
-        let id = e.target.parentNode.parentNode.id
-        if (e.target.checked){
-            data[id].completed = true  
-        }
-        else {
-            data[id].completed = false
-        }
-        domRefresh()
-    }
-})
-
-// ----------------------------------------------- DELETE TASK --------------------------------------
-let ul = document.querySelector("ul")
-
-ul.addEventListener("mouseenter", (e) => {
-    let list = ul.querySelectorAll("li")
-    for (let li of list){
-        li.addEventListener("mouseenter", (event1) => {
-            event1.target.querySelector(".cross").style.visibility = "visible"
-            event.target.querySelector(".cross").addEventListener("click", (event3) => {
-                
-                let node = event3.target.parentNode;
-                console.log("delete id : ", node.getAttribute("id"))
-                let id = node.getAttribute("id")
-                delete data[id]
-                node.remove();
-                event.stopImmediatePropagation();
-                domRefresh()
-            })
-        })
-        li.addEventListener("mouseleave", (event2) => {
-            event2.target.querySelector(".cross").style.visibility = "hidden"
-        })        
-    }
-})
-
 
 // -------------------------------------------------------- DOM REFRESH ------------------------------------------------------------------
 
@@ -72,10 +33,6 @@ function domRefresh() {
         
         let li = document.createElement("li")
         li.setAttribute("id", keys[i])
-        li.setAttribute("draggable", "true")
-        li.setAttribute("ondragstart", "dragstart_handler(event)")
-        li.setAttribute("ondrop", "drop_handler(event)")
-        li.setAttribute("ondragover", "dragover_handler(event)")
 
         let label = document.createElement("label")
         label.textContent = data[keys[i]].text
@@ -87,6 +44,44 @@ function domRefresh() {
         checkbox.checked = data[keys[i]].completed
         checkbox.value = data[keys[i]].completed
         checkbox.setAttribute("id", "toggle")
+
+        // ---------------------------------------------- COMPLETE TASK -------------------------------------------------------------------
+        checkbox.addEventListener("change", (e) => {
+            if (e.target.id == "toggle"){
+                let id = e.target.parentNode.parentNode.id
+                if (e.target.checked){
+                    data[id].completed = true  
+                }
+                else {
+                    data[id].completed = false
+                }
+                domRefresh()
+
+            }
+            event.stopPropagation()
+        })
+
+        checkbox.addEventListener("keypress", (e2) => {
+            if (e2.keycode == 13) {
+                if (e2.target.id == "toggle"){
+                    let id = e2.target.parentNode.parentNode.id
+                    if (e2.target.checked){
+                        data[id].completed = true  
+                    }
+                    else {
+                        data[id].completed = false
+                    }
+                    domRefresh()
+    
+                }
+
+            }
+            
+            event.stopPropagation()
+        })
+
+      
+
         
         if (data[keys[i]].completed){
             label.style.textDecoration = "line-through"
@@ -103,19 +98,46 @@ function domRefresh() {
         li.appendChild(div)
         
 
-        let cross = document.createElement("div")
-        cross.textContent = "\u274C"
-        cross.style.fontSize = "8px"
+        let cross = document.createElement("button")
+        cross.textContent = "Delete"
+        // cross.style.fontSize = "8px"
         cross.className = "cross"
         
         li.append(cross)
         li.style.display = "flex"
         li.style.alignItems = "center"
         li.style.justifyContent = "space-between"
-        li.querySelector(".cross").style.visibility = "hidden"
+        // li.querySelector(".cross").style.visibility = "hidden"
 
         document.querySelector("ul").appendChild(li)
 
+          // ----------------------------------------------- DELETE TASK --------------------------------------
+                    cross.addEventListener("click", (event3) => {
+                        
+                        let node = event3.target.parentNode;
+                        let id = node.getAttribute("id")
+                        delete data[id]
+                        node.remove();
+                        event.stopImmediatePropagation();
+                        domRefresh()
+                    })
+
+                    cross.addEventListener("keypress", (event4) => {
+                        if (event4.keycode == 13){
+                            let node = event4.target.parentNode;
+                            console.log("delete id : ", node.getAttribute("id"))
+                            let id = node.getAttribute("id")
+                            delete data[id]
+                            node.remove();
+                            event.stopImmediatePropagation();
+                            domRefresh()
+
+                        }
+                        
+                    })
+            
     }
+
+  
     
 }
