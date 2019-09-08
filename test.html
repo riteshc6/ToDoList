@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Drag</title>
+</head>
+
+<body>
+    <div>
+        <div id="p1" draggable="true" ondragstart="dragstart_handler(event);" ondrop="drop_handler(event);"
+            ondragover="dragover_handler(event);">
+            This element is draggable
+        </div>
+        <div id="target" draggable="true" ondragstart="dragstart_handler(event);" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
+            Drop Zone
+        </div>
+        <div id="t2" draggable="true" ondragstart="dragstart_handler(event);" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
+                Drop Zone 2
+        </div>
+        <div id="t3" draggable="true" ondragstart="dragstart_handler(event);" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
+                Drop Zone 3
+        </div>
+
+
+    </div>
+
+
+</body>
+<script>
+    // function dragstart_handler(ev) {
+    //     console.log("dragStart");
+    //     ev.dataTransfer.setData("text/plain", ev.target.id)
+    // }
+
+    function dragstart_handler(ev) {
+        console.log(ev.target)
+        ev.dataTransfer.setData("text/plain", ev.target.parentNode.id);
+        // ev.dataTransfer.setdata("text/html", "<p>Example paragraph</p>")
+        //  ev.dataTransfer.setData("text/uri-list", "http://developer.mozilla.org")
+    }
+
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move"
+    }
+
+    function drop_handler(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text/plain");
+        // console.log(data)
+        if (ev.target.parentNode.lastChild == ev.target){
+            ev.target.parentNode.parentNode.appendChild(data)
+
+        }
+        else{
+            ev.target.parentNode.parentNode.insertBefore(document.getElementById(data), ev.target.nextSibling)
+
+        }
+        
+
+        
+    }
+</script>
+
+</html>

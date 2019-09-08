@@ -5,10 +5,10 @@ var count = 0
 
 function addTask(e) {
     obj = {}
-        obj["text"] = e.target.value
-        obj["completed"] = false;
-        data[count] = obj
-        count++
+    obj["text"] = e.target.value
+    obj["completed"] = false;
+    data[count] = obj
+    count++
 }
 
 
@@ -29,15 +29,15 @@ function domRefresh() {
 
     let keys = Object.keys(data)
 
-    for (let i = 0; i < keys.length; i++){
-        
+    for (let i = 0; i < keys.length; i++) {
+
         let li = document.createElement("li")
         li.setAttribute("id", keys[i])
 
         let label = document.createElement("label")
         label.textContent = data[keys[i]].text
 
-        
+
 
         let checkbox = document.createElement("input")
         checkbox.setAttribute("type", "checkbox")
@@ -47,12 +47,11 @@ function domRefresh() {
 
         // ---------------------------------------------- COMPLETE TASK -------------------------------------------------------------------
         checkbox.addEventListener("change", (e) => {
-            if (e.target.id == "toggle"){
+            if (e.target.id == "toggle") {
                 let id = e.target.parentNode.parentNode.id
-                if (e.target.checked){
-                    data[id].completed = true  
-                }
-                else {
+                if (e.target.checked) {
+                    data[id].completed = true
+                } else {
                     data[id].completed = false
                 }
                 domRefresh()
@@ -63,46 +62,44 @@ function domRefresh() {
 
         checkbox.addEventListener("keypress", (e2) => {
             if (e2.keycode == 13) {
-                if (e2.target.id == "toggle"){
+                if (e2.target.id == "toggle") {
                     let id = e2.target.parentNode.parentNode.id
-                    if (e2.target.checked){
-                        data[id].completed = true  
-                    }
-                    else {
+                    if (e2.target.checked) {
+                        data[id].completed = true
+                    } else {
                         data[id].completed = false
                     }
                     domRefresh()
-    
+
                 }
 
             }
-            
+
             event.stopPropagation()
         })
 
-      
 
-        
-        if (data[keys[i]].completed){
+
+
+        if (data[keys[i]].completed) {
             label.style.textDecoration = "line-through"
             label.style.color = "gray"
-        }
-        else{
+        } else {
             label.style.textDecoration = "none"
             label.style.color = "black"
         }
-        
+
         let div = document.createElement("div")
         div.appendChild(checkbox)
         div.appendChild(label)
         li.appendChild(div)
-        
+
 
         let cross = document.createElement("button")
         cross.textContent = "Delete"
         // cross.style.fontSize = "8px"
         cross.className = "cross"
-        
+
         li.append(cross)
         li.style.display = "flex"
         li.style.alignItems = "center"
@@ -111,33 +108,33 @@ function domRefresh() {
 
         document.querySelector("ul").appendChild(li)
 
-          // ----------------------------------------------- DELETE TASK --------------------------------------
-                    cross.addEventListener("click", (event3) => {
-                        
-                        let node = event3.target.parentNode;
-                        let id = node.getAttribute("id")
-                        delete data[id]
-                        node.remove();
-                        event.stopImmediatePropagation();
-                        domRefresh()
-                    })
+        // ----------------------------------------------- DELETE TASK --------------------------------------
+        cross.addEventListener("click", (event3) => {
 
-                    cross.addEventListener("keypress", (event4) => {
-                        if (event4.keycode == 13){
-                            let node = event4.target.parentNode;
-                            console.log("delete id : ", node.getAttribute("id"))
-                            let id = node.getAttribute("id")
-                            delete data[id]
-                            node.remove();
-                            event.stopImmediatePropagation();
-                            domRefresh()
+            let node = event3.target.parentNode;
+            let id = node.getAttribute("id")
+            delete data[id]
+            node.remove();
+            event.stopImmediatePropagation();
+            domRefresh()
+        })
 
-                        }
-                        
-                    })
-            
+        cross.addEventListener("keypress", (event4) => {
+            if (event4.keycode == 13) {
+                let node = event4.target.parentNode;
+                console.log("delete id : ", node.getAttribute("id"))
+                let id = node.getAttribute("id")
+                delete data[id]
+                node.remove();
+                event.stopImmediatePropagation();
+                domRefresh()
+
+            }
+
+        })
+
     }
 
-  
-    
+
+
 }
